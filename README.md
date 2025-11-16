@@ -64,4 +64,3 @@ Kunci API (API Key) untuk Marvel Rivals API sudah disertakan (hard-coded) di dal
 
 Versi `.apk` yang sudah di-build untuk Android bisa diunduh langsung dari halaman **Releases** di repositori ini.
 
-➡️ [**Klik di sini untuk mengunduh BarHero.apk (v1.0.0)**](#)
