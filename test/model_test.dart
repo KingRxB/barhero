@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'dart:convert';
-import 'package:barhero/models/player_profile.dart'; // Sesuaikan path import ini
+import 'package:barhero/models/player_profile.dart'; 
 
-// String JSON besar sebagai mock data (dari contoh response lo)
+
 const String mockPlayerResponse = """
 {
     "uid": 1651337303,
@@ -66,7 +66,7 @@ void main() {
   // Grup tes untuk 'PlayerProfile Model'
   group('PlayerProfile Model', () {
     
-    // Memastikan parsing dari JSON berjalan sukses
+   
     test('berhasil mem-parsing JSON lengkap', () {
       // 1. Ubah string JSON jadi Map
       final Map<String, dynamic> jsonMap = jsonDecode(mockPlayerResponse);
