@@ -10,42 +10,74 @@ class HistoryScreen extends StatelessWidget {
     if (profile.matchHistory.isEmpty) {
       return Center(
         child: Text(
-          'Tidak ada riwayat pertandingan yang tersedia.',
+          'No match history available.',
           style: TextStyle(color: Colors.grey[500]),
         ),
       );
     }
-    
-    return ListView.builder(
-      padding: const EdgeInsets.all(8.0),
+
+    return ListView.separated(
+      padding: const EdgeInsets.all(12.0),
       itemCount: profile.matchHistory.length,
+      separatorBuilder: (context, index) => const SizedBox(height: 8),
       itemBuilder: (context, index) {
         final match = profile.matchHistory[index];
-        final isWin = match.result == 'WIN';
-        
-        return Card(
-          color: isWin ? Colors.green[800]!.withOpacity(0.3) : Colors.red[800]!.withOpacity(0.3),
-          margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
-          child: ListTile(
-            leading: Icon(
-              isWin ? Icons.emoji_events : Icons.close,
-              color: isWin ? Colors.greenAccent : Colors.redAccent,
-              size: 30,
+        return _HistoryCard(match: match);
+      },
+    );
+  }
+}
+
+class _HistoryCard extends StatelessWidget {
+  const _HistoryCard({required this.match});
+
+  final MatchHistoryItem match;
+
+  @override
+  Widget build(BuildContext context) {
+    final bool isWin = match.result == 'WIN';
+    final Color resultColor = isWin ? Colors.greenAccent : Colors.redAccent;
+
+    return Card(
+      color: isWin
+          ? Colors.green[800]!.withOpacity(0.3)
+          : Colors.red[800]!.withOpacity(0.3),
+      elevation: 2,
+      child: ListTile(
+        leading: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              isWin ? Icons.check_circle : Icons.cancel,
+              color: resultColor,
+              size: 24,
             ),
-            title: Text(
+            Text(
               match.result,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: isWin ? Colors.greenAccent : Colors.redAccent,
+                fontSize: 12,
+                color: resultColor,
               ),
             ),
-            subtitle: Text('Kills: ${match.kills} | Durasi: ${match.duration}s',
-              style: TextStyle(color: Colors.grey[300]),
-            ),
-            trailing: Text(match.date, style: TextStyle(color: Colors.grey[400])),
+          ],
+        ),
+
+        title: Text(
+          match.heroName.toUpperCase(),
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+            letterSpacing: 0.5,
           ),
-        );
-      },
+        ),
+
+        subtitle: Text(
+          'Kills: ${match.kills} | Duration: ${match.duration}s',
+          style: TextStyle(color: Colors.grey[300]),
+        ),
+        trailing: Text(match.date, style: TextStyle(color: Colors.grey[400])),
+      ),
     );
   }
 }

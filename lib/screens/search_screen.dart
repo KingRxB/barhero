@@ -10,14 +10,16 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  final ApiService _apiService = ApiService();
+  final MarvelApi _apiService = MarvelApi();
   final TextEditingController _queryController = TextEditingController();
+
   bool _isLoading = false;
   String? _error;
 
-  Future<void> _fetchProfileAndNavigate(String query) async {
+  Future<void> _fetchProfileAndNavigate() async {
+    final String query = _queryController.text.trim();
     if (query.isEmpty) {
-      setState(() => _error = "Masukkan Username atau UID pemain.");
+      setState(() => _error = "Please enter a Username or UID."); 
       return;
     }
 
@@ -27,8 +29,10 @@ class _SearchScreenState extends State<SearchScreen> {
     });
 
     try {
-      final profile = await _apiService.fetchProfile(query.trim());
+
+      final profile = await _apiService.fetchProfile(query);
       
+
       if (mounted) {
         Navigator.of(context).push(
           MaterialPageRoute(
@@ -38,8 +42,10 @@ class _SearchScreenState extends State<SearchScreen> {
       }
 
     } catch (e) {
+
       setState(() => _error = e.toString().replaceFirst('Exception: ', ''));
     } finally {
+
       if(mounted) setState(() => _isLoading = false);
     }
   }
@@ -55,7 +61,7 @@ class _SearchScreenState extends State<SearchScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            // Header
+
             Center(
               child: Text(
                 'MARVEL RIVALS STATS', 
@@ -68,30 +74,31 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
             const SizedBox(height: 40),
 
-            // Input Nickname / UID
+
             TextField(
               controller: _queryController,
               decoration: const InputDecoration(
-                labelText: 'Username atau UID',
-                hintText: 'Cth: player1234',
+                labelText: 'Username or UID', 
+                hintText: 'e.g., player1234', 
                 prefixIcon: Icon(Icons.person_search, color: Colors.redAccent),
-                border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
               ),
               style: const TextStyle(color: Colors.white),
             ),
             const SizedBox(height: 20),
 
-            // Tombol Cari
+
             ElevatedButton.icon(
-              icon: _isLoading ? const SizedBox(
-                width: 20, height: 20, 
-                child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
-              ) : const Icon(Icons.search),
+              icon: _isLoading 
+                  ? const SizedBox(
+                      width: 20, height: 20, 
+                      child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
+                    ) 
+                  : const Icon(Icons.search),
               label: Text(
-                _isLoading ? 'Mencari...' : 'Cari BarHero',
+                _isLoading ? 'Searching...' : 'Search Player', 
                 style: const TextStyle(fontSize: 18),
               ),
-              onPressed: _isLoading ? null : () => _fetchProfileAndNavigate(_queryController.text),
+              onPressed: _isLoading ? null : _fetchProfileAndNavigate, 
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.redAccent,
                 padding: const EdgeInsets.symmetric(vertical: 16),
@@ -100,11 +107,11 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
             const SizedBox(height: 20),
             
-            // Error Message
+
             if (_error != null)
               Center(
                 child: Text(
-                  'Error: $_error',
+                  'Error: $_error', 
                   style: const TextStyle(color: Colors.amber, fontSize: 14),
                   textAlign: TextAlign.center,
                 ),

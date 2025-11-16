@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/search_screen.dart';
+import 'screens/home_screen.dart';
 
 void main() {
   runApp(const BarHeroApp());
@@ -16,7 +16,12 @@ class BarHeroApp extends StatelessWidget {
         primarySwatch: Colors.red,
         brightness: Brightness.dark,
         scaffoldBackgroundColor: Colors.grey[900],
-        appBarTheme: AppBarTheme(backgroundColor: Colors.red[900]),
+
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.red[900],
+          elevation: 2,
+        ),
+
         inputDecorationTheme: const InputDecorationTheme(
           filled: true,
           fillColor: Color(0xFF333333),
@@ -27,9 +32,10 @@ class BarHeroApp extends StatelessWidget {
             borderSide: BorderSide.none,
           ),
         ),
+
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: const SearchScreen(),
+      home: const HomeScreen(),
     );
   }
 }
